@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import ThemeProvider from "../context/ThemeProvider";
-// import AuthProvider from "./context/AuthProvider";
+import ThemeProvider from "./context/ThemeProvider";
+import AuthProvider from "./context/AuthProvider";
 // import RouteGuard from "./components/RouteGuard";
 
 // pages & components
@@ -15,26 +15,26 @@ import Signup from "./pages/Signup";
 
 const App = () => {
   return (
-    // <AuthProvider>
-    <ThemeProvider>
-      <BrowserRouter>
-        <div className="App">
-          <Navbar />
-          <div className="content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/jobs/:id" element={<JobPage />} />
-              <Route path="/jobs/add-job" element={<AddJobPage />} />
-              <Route path="/edit-job/:id" element={<EditJobPage />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+    <AuthProvider>
+      <ThemeProvider>
+        <BrowserRouter>
+          <div className="App">
+            <Navbar />
+            <div className="content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/jobs/:id" element={<JobPage />} />
+                <Route path="/jobs/add-job" element={<AddJobPage />} />
+                <Route path="/edit-job/:id" element={<EditJobPage />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
-    // </AuthProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthProvider>
   );
 };
 

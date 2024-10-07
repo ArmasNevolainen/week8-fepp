@@ -1,13 +1,13 @@
 import useField from "../hooks/useField";
 import useSignup from "../hooks/useSignup";
 import { useNavigate } from "react-router-dom";
-// import { useContext } from "react";
-// import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const Signup = () => {
   const navigate = useNavigate();
-  // const { setUser } = useContext(AuthContext); // Access Auth  
-  const name = useField("text");  
+  const { setUser } = useContext(AuthContext); // Access Auth
+  const name = useField("text");
   const email = useField("email");
   const password = useField("password");
   const phoneNumber = useField("text");
@@ -31,11 +31,13 @@ const Signup = () => {
     });
 
     if (userData) {
-      console.log("success");
-      // setUser(userData); // Set user data in context
+      console.log("Signup successful:", userData);
+
+      setUser({ userData }); // Set user data in context
       navigate("/"); // Redirect to home or desired page
     } else {
       console.error("Signup failed:", error);
+      console.log(error);
     }
   };
 

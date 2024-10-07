@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
-// import AuthContext from "../context/AuthContext";
+import AuthContext from "../context/AuthContext";
 
 const AddJobPage = () => {
   const [title, setTitle] = useState("");
@@ -9,9 +9,9 @@ const AddJobPage = () => {
   const [companyName, setCompanyName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
-  //  const { token } = useContext(AuthContext); // Access Auth
+  const { token } = useContext(AuthContext); // Access Auth
   const user = JSON.parse(localStorage.getItem("user"));
-  const token = user ? user.token : null;
+  //const token = user ? user.token : null;
 
   const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ const AddJobPage = () => {
   if (!token) {
     return <div>You are not authorized to add a job.</div>; // Handle unauthorized access
   }
-  
+
   return (
     <div className="create">
       <h2>Add a New Job</h2>
