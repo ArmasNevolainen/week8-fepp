@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ThemeProvider from "./context/ThemeProvider";
 import AuthProvider from "./context/AuthProvider";
-// import RouteGuard from "./components/RouteGuard";
+import RouteGuard from "./components/RouteGuard";
 
 // pages & components
 import Navbar from "./components/Navbar";
@@ -24,8 +24,22 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/jobs/:id" element={<JobPage />} />
-                <Route path="/jobs/add-job" element={<AddJobPage />} />
-                <Route path="/edit-job/:id" element={<EditJobPage />} />
+                <Route
+                  path="/jobs/add-job"
+                  element={
+                    <RouteGuard requireAuth={true}>
+                      <AddJobPage />
+                    </RouteGuard>
+                  }
+                />
+                <Route
+                  path="/edit-job/:id"
+                  element={
+                    <RouteGuard requireAuth={true}>
+                      <EditJobPage />
+                    </RouteGuard>
+                  }
+                />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="*" element={<NotFoundPage />} />
