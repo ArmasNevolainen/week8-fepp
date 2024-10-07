@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useAuth } from "./useAuth";
 
 export default function useSignup(url) {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Changed to false by default
+  const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useAuth();
 
   const signup = async (object) => {
     setIsLoading(true);
@@ -14,22 +16,26 @@ export default function useSignup(url) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(object),
       });
-      const user = await response.json();
+      const userData = await response.json();
 
       if (!response.ok) {
-        setError(user.error);
-        return null; // Return null on error
+        setError(userData.error);
+        setIsLoading(false);
+        return null;
       }
 
+      // Update auth context
+      setUser(userData);
+
       // Save user data to localStorage
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(userData));
 
       setIsLoading(false);
-      return user; // Return user data on success
+      return userData;
     } catch (err) {
-      setError("An error occurred while logging in."); // Handle unexpected errors
+      setError("An error occurred while signing up.");
       setIsLoading(false);
-      return null; // Return null on exception
+      return null;
     }
   };
 

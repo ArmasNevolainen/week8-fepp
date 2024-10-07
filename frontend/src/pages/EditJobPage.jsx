@@ -51,16 +51,16 @@ const EditJobPage = () => {
     };
 
     // Only fetch the job if the token is available
-    // if (!isLoading && token) {
-    fetchJob();
-    // }
-  }, [id, token]);
-  // }, [id, token, isLoading]);
+    if (!isLoading && token) {
+      fetchJob();
+    }
+    //}, [id, token]);
+  }, [id, token, isLoading]);
 
   // Check if loading or token is null
-  // if (isLoading) {
-  //   return <LoadingSpinner />;
-  // }
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   if (!token) {
     return <div>You are not authorized to edit this job.</div>; // Handle unauthorized access

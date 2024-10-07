@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
 import LoadingSpinner from "./LoadingSpinner";
-import ThemeContext from "../context/ThemeContext";
+import { useTheme } from "../hooks/useTheme";
+import { useAuth } from "../hooks/useAuth";
 
 const Navbar = () => {
-  const { isAuthenticated, clearUser, email, isLoading } =
-    useContext(AuthContext);
-  const { toggleTheme } = useContext(ThemeContext);
+  const { isAuthenticated, token } = useAuth();
+  const { toggleTheme } = useTheme();
+  const { isLoading, email, clearUser } = useAuth();
 
   const handleClick = (e) => {
     clearUser(); // Log the user out by clearing their authentication data
@@ -29,11 +28,13 @@ const Navbar = () => {
             <Link to="/jobs/add-job">Add Job</Link>
             {email && <span>{email}</span>}
             <button onClick={handleClick}>Log out</button>
+            <p>Authenticated with token: {token}</p>
           </div>
         ) : (
           <div>
             <Link to="/login">Login</Link>
             <Link to="/signup">Signup</Link>
+            <p>Not Authenticated</p>
           </div>
         )}
       </div>

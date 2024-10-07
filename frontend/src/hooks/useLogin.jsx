@@ -1,37 +1,43 @@
 import { useState } from "react";
+import { useAuth } from "./useAuth";
 
 export default function useLogin(url) {
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false); // Changed to false by default
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useAuth(); // Use the setUser function from useAuth
 
-    const login = async (object) => {
-        setIsLoading(true);
-        setError(null);
-        
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(object),
-            });
-            const user = await response.json();
+  const login = async (object) => {
+    setIsLoading(true);
+    setError(null);
 
-            if (!response.ok) {
-                setError(user.error);
-                return null; // Return null on error
-            }
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(object),
+      });
+      const userData = await response.json();
 
-            // Save user data to localStorage
-            localStorage.setItem("user", JSON.stringify(user));
+      if (!response.ok) {
+        setError(userData.error);
+        setIsLoading(false);
+        return null;
+      }
 
-            setIsLoading(false);
-            return user; // Return user data on success
-        } catch (err) {
-            setError("An error occurred while logging in."); // Handle unexpected errors
-            setIsLoading(false);
-            return null; // Return null on exception
-        }
-    };
+      // Update the auth context with the user data
+      setUser(userData);
 
-    return { login, isLoading, error };
+      // Save user data to localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setIsLoading(false);
+      return userData;
+    } catch (err) {
+      setError("An error occurred while logging in.");
+      setIsLoading(false);
+      return null;
+    }
+  };
+
+  return { login, isLoading, error };
 }
